@@ -1,4 +1,5 @@
 package com.goit;
+
 import client.Client;
 import client.ClientCrudService;
 import client.HibernateClientCrudService;
@@ -6,11 +7,15 @@ import planet.HibernatePlanetCrudService;
 import planet.Planet;
 import planet.PlanetCrudService;
 import storage.DataBaseInitService;
+import ticket.HibernateTicketCrudService;
+import ticket.Ticket;
+import ticket.TicketCrudService;
+
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        //Flyway init DB
+            //Flyway init DB
         DataBaseInitService dataBaseInitService = new DataBaseInitService();
         dataBaseInitService.initDB();
         //Testing PlanetCRUDService
@@ -45,10 +50,51 @@ public class Main {
             // Update method
         clientCrudService.update(newClient.getId(), "updated name");
             // Get list of all
-        System.out.println("clientCrudService.listAll() = " + clientCrudService.listAll());
+        System.out.println("clientCrudService.listAll() = "
+                + clientCrudService.listAll());
             // Delete method
         clientCrudService.deleteById(newClient.getId());
         System.out.println("After deleting " + clientCrudService.listAll());
+
+
+        // Ticket CRUD service
+        TicketCrudService ticketCrudService = new HibernateTicketCrudService();
+
+              //Create
+        final Ticket ticket = new Ticket();
+        ticket.setClient(new HibernateClientCrudService().getById(41));
+        ticket.setFromPlanet(new HibernatePlanetCrudService().getById("EARTH"));
+        ticket.setToPlanet(new HibernatePlanetCrudService().getById("MARS"));
+        final long createdTicketId = ticketCrudService.create(ticket);
+        System.out.println("createdTicketId = " + createdTicketId);
+
+                //GetById
+        final Ticket byId = ticketCrudService.getById(createdTicketId);
+        System.out.println("byId = " + byId);
+        System.out.println("byId.getClient() = " + byId.getClient());
+
+                // Update
+        Client client = new Client();
+        client.setName("TestClient");
+        final long newId = clientCrudService.create(client);
+
+        ticketCrudService
+                .update(
+                        createdTicketId,
+                        clientCrudService.getById(newId),
+                        planetCrudService.getById("PLUTO"),
+                        planetCrudService.getById("VENUS"));
+        System.out.println(
+                "ticketCrudService.getById(createdTicketId) = "
+                        + ticketCrudService.getById(createdTicketId));
+
+                // listAll()
+        final List<Ticket> tickets = ticketCrudService.listAll();
+        for (Ticket ticket1 : tickets) {
+            System.out.println("ticket = " + ticket1);
+        }
+                // DeleteById
+        ticketCrudService.deleteById(createdTicketId);
 
     }
 }

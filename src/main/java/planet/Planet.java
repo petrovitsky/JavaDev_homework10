@@ -1,10 +1,10 @@
 package planet;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import ticket.Ticket;
+
+import java.util.List;
 
 @Entity
 @Table(name = "planet")
@@ -12,6 +12,13 @@ import lombok.Data;
 public class Planet {
     @Id
     private String id;
+
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "fromPlanet", fetch = FetchType.EAGER)
+    private  List<Ticket> ticketsFrom;
+
+    @OneToMany(mappedBy = "toPlanet", fetch = FetchType.EAGER)
+    private List<Ticket> ticketsTo;
 }

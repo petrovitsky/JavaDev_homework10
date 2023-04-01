@@ -2,12 +2,10 @@ package storage.hibernate;
 
 import client.Client;
 import lombok.Getter;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import planet.Planet;
-
-import java.util.List;
+import ticket.Ticket;
 
 public class HibernateUtil {
     private static final HibernateUtil INSTANCE;
@@ -23,6 +21,7 @@ public class HibernateUtil {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(Client.class)
                 .addAnnotatedClass(Planet.class)
+                .addAnnotatedClass(Ticket.class)
                 .buildSessionFactory();
     }
 
@@ -34,14 +33,13 @@ public class HibernateUtil {
         sessionFactory.close();
     }
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 
-        HibernateUtil hibernateUtil = new HibernateUtil();
+//        HibernateUtil hibernateUtil = new HibernateUtil();
 
         // Get single
 //        Session session = hibernateUtil.getSessionFactory().openSession();
-//        final Passenger passenger = session.get(Passenger.class, 1l);
-//        System.out.println("passenger = " + passenger);
+//        session.get(Ticket.class, )
 //        session.close();
 
 
@@ -78,13 +76,55 @@ public class HibernateUtil {
 //        transaction.commit();
 //        session.close();
 
+//
+//        Session session = hibernateUtil.getSessionFactory().openSession();
+//        final List<Planet> fromPerson = session.createQuery("from Planet ", Planet.class).list();
+//        System.out.println("fromPerson = " + fromPerson);
+//        session.close();
 
-        Session session = hibernateUtil.getSessionFactory().openSession();
-        final List<Planet> fromPerson = session.createQuery("from Planet ", Planet.class).list();
-        System.out.println("fromPerson = " + fromPerson);
-        session.close();
+        // Adding ticket
+//        Session session = hibernateUtil.getSessionFactory().openSession();
+//            final Transaction transaction = session.beginTransaction();
+//                Client newClient = new Client();
+//                newClient.setName("Mira");
+//                session.persist(newClient);
+//
+//                final Planet fromPlanet = session.get(Planet.class, "VENUS");
+//                final Planet toPlanet = session.get(Planet.class, "PLUTO");
+//
+//                Ticket ticket = new Ticket();
+//                ticket.setClient(newClient);
+//                ticket.setFromPlanet(fromPlanet);
+//                ticket.setToPlanet(toPlanet);
+//
+//
+//                session.persist(ticket);
+//
+//        transaction.commit();
+//        session.close();
 
-    }
+
+
+        // Get single
+//        Session session = hibernateUtil.getSessionFactory().openSession();
+//        final Ticket ticket = session.get(Ticket.class, 29L);
+//        System.out.println("ticket = " + ticket);
+//        System.out.println("ticket.getClient() = " + ticket.getClient());
+//        session.close();
+
+            // Adding another ticket
+//        final Session session = hibernateUtil.getSessionFactory().openSession();
+//            final Transaction transaction = session.beginTransaction();
+//                final Client client = session.get(Client.class, 34L);
+//
+//                final Ticket ticket = new Ticket();
+//                ticket.setClient(client);
+//
+//                session.persist(ticket);
+//
+//            transaction.commit();
+//        session.close();
+//    }
 
 }
 
